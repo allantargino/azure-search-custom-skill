@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using CustomSkill.API.Models;
+using CustomSkill.API.CustomSkills;
 
-namespace CustomSkill.API.Processors
+namespace CustomSkill.API.Laws
 {
     public class LawsProcessor
     {
-        public Output Process(Input input)
+        public Output<LawOutputData> Process(Input<LawInputData> input)
         {
             var outputValues = ProcessInputRecords(input.Values);
 
@@ -14,7 +14,7 @@ namespace CustomSkill.API.Processors
             return output;
         }
 
-        private IEnumerable<OutputRecord<OutputData>> ProcessInputRecords(IEnumerable<InputRecord<InputData>> inputRecords)
+        private IEnumerable<OutputRecord<LawOutputData>> ProcessInputRecords(IEnumerable<InputRecord<LawInputData>> inputRecords)
         {
             foreach (var inputRecord in inputRecords)
             {
@@ -25,11 +25,11 @@ namespace CustomSkill.API.Processors
             }
         }
 
-        private OutputData ProcessInputRecordData(InputData inputData)
+        private LawOutputData ProcessInputRecordData(LawInputData inputData)
         {
             var outputResult = IsRecordFinishedAndHasWonTrial(inputData);
 
-            var outputData = new OutputData()
+            var outputData = new LawOutputData()
             {
                 Result = outputResult
             };
@@ -37,24 +37,23 @@ namespace CustomSkill.API.Processors
             return outputData;
         }
 
-        private bool IsRecordFinishedAndHasWonTrial(InputData inputData)
+        private bool IsRecordFinishedAndHasWonTrial(LawInputData inputData)
         {
             return inputData.Finished == true && inputData.Success == true;
         }
 
-        private OutputRecord<OutputData> CreateOutputRecord(InputRecord<InputData> inputRecord, OutputData outputData)
+        private OutputRecord<LawOutputData> CreateOutputRecord(InputRecord<LawInputData> inputRecord, LawOutputData outputData)
         {
-            return new OutputRecord<OutputData>()
+            return new OutputRecord<LawOutputData>()
             {
                 RecordId = inputRecord.RecordId,
                 Data = outputData
             };
         }
 
-
-        private Output CreateOutput(IEnumerable<OutputRecord<OutputData>> outputValues)
+        private Output<LawOutputData> CreateOutput(IEnumerable<OutputRecord<LawOutputData>> outputValues)
         {
-            return new Output()
+            return new Output<LawOutputData>()
             {
                 Values = outputValues
             };

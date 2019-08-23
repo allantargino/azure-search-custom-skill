@@ -1,4 +1,4 @@
-﻿namespace CustomSkill.API.Models
+﻿namespace CustomSkill.API.CustomSkills
 {
     public class Failure
     {

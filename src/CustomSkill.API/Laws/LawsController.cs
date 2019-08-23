@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CustomSkill.API.Models;
-using CustomSkill.API.Processors;
+﻿using System.Linq;
+using CustomSkill.API.CustomSkills;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CustomSkill.API.Controllers
+namespace CustomSkill.API.Laws
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,13 +18,13 @@ namespace CustomSkill.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public Output Post([FromBody] Input input)
+        public Output<LawOutputData> Post([FromBody] Input<LawInputData> input)
         {
             logger.LogInformation("Input values received: {Count}", input.Values.Count());
 
-            var processor = new LawsProcessor();
+            var lawsProcessor = new LawsProcessor();
 
-            var result = processor.Process(input);
+            var result = lawsProcessor.Process(input);
 
             return result;
         }

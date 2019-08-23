@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CustomSkill.API.Models
+namespace CustomSkill.API.CustomSkills
 {
     public class Record<T>
     {

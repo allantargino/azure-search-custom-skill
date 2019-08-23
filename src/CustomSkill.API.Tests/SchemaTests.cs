@@ -1,4 +1,5 @@
-using CustomSkill.API.Models;
+using CustomSkill.API.CustomSkills;
+using CustomSkill.API.Laws;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System;
@@ -35,15 +36,15 @@ namespace CustomSkill.API.Tests
             response.EnsureSuccessStatusCode();
         }
 
-        private Input CreateInput()
+        private Input<LawInputData> CreateInput()
         {
-            return new Input()
+            return new Input<LawInputData>()
             {
-                Values = new List<InputRecord<InputData>>
+                Values = new List<InputRecord<LawInputData>>
                 {
-                    new InputRecord<InputData>()
+                    new InputRecord<LawInputData>()
                     {
-                        Data = new InputData()
+                        Data = new LawInputData()
                         {
                             Finished = true,
                             Success = true
