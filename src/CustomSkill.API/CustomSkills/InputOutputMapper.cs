@@ -27,25 +27,28 @@ namespace CustomSkill.API.CustomSkills
         {
             foreach (var inputRecord in inputRecords)
             {
-                OutputRecord<TOutputData> outputRecord;
-
-                try
-                {
-                    var outputData = ProcessInputRecord(inputRecord);
-                    outputRecord = OutputRecord<TOutputData>.CreateOutputRecord(inputRecord.RecordId, outputData);
-                }
-                catch (Exception ex)
-                {
-                    outputRecord = OutputRecord<TOutputData>.CreateOutputRecordWithError(inputRecord.RecordId, ex);
-                }
+                OutputRecord<TOutputData> outputRecord = ProcessInputRecord(inputRecord);
 
                 yield return outputRecord;
             }
         }
 
-        private TOutputData ProcessInputRecord(InputRecord<TInputData> inputRecord)
+        private OutputRecord<TOutputData> ProcessInputRecord(InputRecord<TInputData> inputRecord)
         {
-            return processor.Process(inputRecord.Data);
+            OutputRecord<TOutputData> outputRecord;
+
+            try
+            {
+                var outputData = processor.Process(inputRecord.Data);
+                outputRecord = OutputRecord<TOutputData>.CreateOutputRecord(inputRecord.RecordId, outputData);
+            }
+            catch (Exception ex)
+            {
+                outputRecord = OutputRecord<TOutputData>.CreateOutputRecordWithError(inputRecord.RecordId, ex);
+            }
+
+            return outputRecord;
         }
+
     }
 }
