@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace CustomSkill.API.CustomSkills
 {
-    public class InputRecord<TInputData> : Record<TInputData>
+    public interface IProcessor<TInputData, TOutputData>
     {
-
+        TOutputData Process(TInputData input);
     }
 }

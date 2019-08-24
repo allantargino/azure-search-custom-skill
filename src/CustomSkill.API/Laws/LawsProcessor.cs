@@ -3,59 +3,27 @@ using CustomSkill.API.CustomSkills;
 
 namespace CustomSkill.API.Laws
 {
-    public class LawsProcessor
+    public class LawsProcessor : IProcessor<LawInputData, LawOutputData>
     {
-        public Output<LawOutputData> Process(Input<LawInputData> input)
+        public LawOutputData Process(LawInputData input)
         {
-            var outputValues = ProcessInputRecords(input.Values);
+            var outputResult = IsRecordFinishedAndHasWonTrial(input);
 
-            var output = CreateOutput(outputValues);
-
-            return output;
-        }
-
-        private IEnumerable<OutputRecord<LawOutputData>> ProcessInputRecords(IEnumerable<InputRecord<LawInputData>> inputRecords)
-        {
-            foreach (var inputRecord in inputRecords)
-            {
-                var outputData = ProcessInputRecordData(inputRecord.Data);
-                var outputRecord = CreateOutputRecord(inputRecord, outputData);
-
-                yield return outputRecord;
-            }
-        }
-
-        private LawOutputData ProcessInputRecordData(LawInputData inputData)
-        {
-            var outputResult = IsRecordFinishedAndHasWonTrial(inputData);
-
-            var outputData = new LawOutputData()
-            {
-                Result = outputResult
-            };
+            LawOutputData outputData = CreateOutputDataFromResult(outputResult);
 
             return outputData;
         }
 
         private bool IsRecordFinishedAndHasWonTrial(LawInputData inputData)
         {
-            return inputData.Finished == true && inputData.Success == true;
+            return inputData.Finished && inputData.Success;
         }
 
-        private OutputRecord<LawOutputData> CreateOutputRecord(InputRecord<LawInputData> inputRecord, LawOutputData outputData)
+        private LawOutputData CreateOutputDataFromResult(bool outputResult)
         {
-            return new OutputRecord<LawOutputData>()
+            return new LawOutputData()
             {
-                RecordId = inputRecord.RecordId,
-                Data = outputData
-            };
-        }
-
-        private Output<LawOutputData> CreateOutput(IEnumerable<OutputRecord<LawOutputData>> outputValues)
-        {
-            return new Output<LawOutputData>()
-            {
-                Values = outputValues
+                Result = outputResult
             };
         }
     }

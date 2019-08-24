@@ -20,13 +20,14 @@ namespace CustomSkill.API.Laws
         [HttpPost]
         public Output<LawOutputData> Post([FromBody] Input<LawInputData> input)
         {
-            logger.LogInformation("Input values received: {Count}", input.Values.Count());
+            logger.LogInformation("Laws received: {Count}", input.Values.Count());
 
             var lawsProcessor = new LawsProcessor();
+            var lawsMapper = new InputOutputMapper<LawInputData, LawOutputData>(lawsProcessor);
 
-            var result = lawsProcessor.Process(input);
+            var output = lawsMapper.Map(input);
 
-            return result;
+            return output;
         }
     }
 }

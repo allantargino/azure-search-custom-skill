@@ -2,7 +2,7 @@
 {
     public class LawInputData
     {
-        public bool? Finished { get; set; }
-        public bool? Success { get; set; }
+        public bool Finished { get; set; }
+        public bool Success { get; set; }
     }
 }
